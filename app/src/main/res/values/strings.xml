@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">gb_kotlin</string>
+    <string name="app_name">Kotlin_Notes</string>
     <string name="new_note">Новая заметка</string>
     <string name="logout_menu_title">Выход</string>
     <string name="logout_dialog_title">Выход</string>
