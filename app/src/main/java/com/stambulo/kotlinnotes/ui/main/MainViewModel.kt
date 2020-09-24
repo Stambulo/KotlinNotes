@@ -6,7 +6,7 @@ import com.stambulo.kotlinnotes.data.entity.Note
 import com.stambulo.kotlinnotes.data.model.NoteResult
 import com.stambulo.kotlinnotes.ui.base.BaseViewModel
 
-class MainViewModel() : BaseViewModel<List<Note>?, MainViewState>() {
+class MainViewModel(notesRepository: NotesRepository) : BaseViewModel<List<Note>?, MainViewState>() {
 
     private val notesObserver = Observer<NoteResult> { result ->
         result ?: return@Observer
@@ -16,7 +16,7 @@ class MainViewModel() : BaseViewModel<List<Note>?, MainViewState>() {
         }
     }
 
-    private val repositoryNotes = NotesRepository.getNotes()
+    private val repositoryNotes = notesRepository.getNotes()
 
     init {
         viewStateLiveData.value = MainViewState()
