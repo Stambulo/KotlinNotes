@@ -9,7 +9,7 @@ import com.stambulo.kotlinnotes.data.entity.User
 import com.stambulo.kotlinnotes.data.errors.NoAuthException
 import com.stambulo.kotlinnotes.data.model.NoteResult
 
-class FirestoreProvider : DataProvider {
+class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFirestore) : DataProvider {
 
     companion object {
         private const val NOTES_COLLECTION = "notes"
@@ -19,8 +19,7 @@ class FirestoreProvider : DataProvider {
     private val currentUser
         get() = FirebaseAuth.getInstance().currentUser
 
-    private val store by lazy { FirebaseFirestore.getInstance()}
-    private val notesReference
+        private val notesReference
             get() = currentUser?.let {
                 store.collection(NOTES_COLLECTION).document(it.uid).collection(NOTES_COLLECTION)
             } ?: throw NoAuthException()
@@ -36,7 +35,7 @@ class FirestoreProvider : DataProvider {
         try {
             notesReference.addSnapshotListener { snapshot, e ->
                 e?.let {
-                    value = NoteResult.Error(it)
+
                 } ?: snapshot?.let {
                     val notes = snapshot.documents.mapNotNull { it.toObject(Note::class.java) }
                     value = NoteResult.Success(notes)
@@ -70,6 +69,19 @@ class FirestoreProvider : DataProvider {
                     value = NoteResult.Error(it)
                 }
         }catch (t: Throwable){
+            value = NoteResult.Error(t)
+        }
+    }
+
+    override fun deleteNote(id: String): LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
+        try {
+            notesReference.document(id).delete()
+                .addOnSuccessListener { snapshot ->
+                    value = NoteResult.Success(null)
+                }.addOnFailureListener {
+                    value = NoteResult.Error(it)
+                }
+        } catch (t: Throwable) {
             value = NoteResult.Error(t)
         }
     }
