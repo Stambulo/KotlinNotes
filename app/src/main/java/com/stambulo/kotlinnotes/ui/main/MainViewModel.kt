@@ -1,6 +1,8 @@
 package com.stambulo.kotlinnotes.ui.main
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Observer
+
 import com.stambulo.kotlinnotes.data.NotesRepository
 import com.stambulo.kotlinnotes.data.entity.Note
 import com.stambulo.kotlinnotes.data.model.NoteResult
@@ -23,7 +25,8 @@ class MainViewModel(notesRepository: NotesRepository) : BaseViewModel<List<Note>
         repositoryNotes.observeForever(notesObserver)
     }
 
-    override fun onCleared() {
+    @VisibleForTesting
+    override public fun onCleared() {
         super.onCleared()
         repositoryNotes.removeObserver(notesObserver)
     }

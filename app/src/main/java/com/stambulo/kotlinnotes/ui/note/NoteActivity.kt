@@ -11,13 +11,13 @@ import android.view.MenuItem
 import org.koin.android.viewmodel.ext.android.viewModel
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.activity_note.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 import com.stambulo.kotlinnotes.R
 import com.stambulo.kotlinnotes.data.entity.Note
 import com.stambulo.kotlinnotes.extensions.getColorInt
 import com.stambulo.kotlinnotes.ui.base.BaseActivity
-import java.text.SimpleDateFormat
-import java.util.*
 
 class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
     companion object {

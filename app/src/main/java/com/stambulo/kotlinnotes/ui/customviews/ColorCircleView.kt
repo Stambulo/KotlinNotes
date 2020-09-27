@@ -8,6 +8,7 @@ import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.Dimension
 import androidx.core.content.ContextCompat
+
 import com.stambulo.kotlinnotes.R
 import com.stambulo.kotlinnotes.extensions.dip
 

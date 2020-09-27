@@ -2,6 +2,7 @@ package com.stambulo.kotlinnotes.ui.splash
 
 import android.os.Handler
 import org.koin.android.viewmodel.ext.android.viewModel
+
 import com.stambulo.kotlinnotes.ui.base.BaseActivity
 import com.stambulo.kotlinnotes.ui.main.MainActivity
 

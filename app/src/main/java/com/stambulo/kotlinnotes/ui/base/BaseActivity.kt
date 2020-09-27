@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
+
 import com.stambulo.kotlinnotes.R
 import com.stambulo.kotlinnotes.data.errors.NoAuthException
 

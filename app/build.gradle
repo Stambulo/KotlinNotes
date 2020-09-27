@@ -16,6 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner ".TestAppJunitRunner"
     }
 
     buildTypes {
@@ -24,6 +25,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    /*testOptions {
+        unitTests.returnDefaultValues = true
+    }*/
 }
 
 dependencies {
@@ -46,8 +51,14 @@ dependencies {
     implementation 'org.koin:koin-android:1.0.1'
     implementation 'org.koin:koin-android-viewmodel:1.0.1'
 
+    testImplementation "io.mockk:mockk:1.10.0"
     testImplementation 'junit:junit:4.13'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation "io.mockk:mockk-android:1.10.0"
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 apply plugin: 'com.google.gms.google-services'

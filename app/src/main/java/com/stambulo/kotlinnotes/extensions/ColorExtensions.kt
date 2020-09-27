@@ -2,6 +2,7 @@ package com.stambulo.kotlinnotes.extensions
 
 import android.content.Context
 import androidx.core.content.ContextCompat
+
 import com.stambulo.kotlinnotes.R
 import com.stambulo.kotlinnotes.data.entity.Note
 

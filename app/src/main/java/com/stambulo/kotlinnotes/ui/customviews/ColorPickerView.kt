@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import androidx.annotation.Dimension
 import androidx.annotation.Dimension.DP
+
 import com.stambulo.kotlinnotes.data.entity.Note
 import com.stambulo.kotlinnotes.extensions.dip
 import com.stambulo.kotlinnotes.extensions.getColorRes

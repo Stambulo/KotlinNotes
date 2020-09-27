@@ -2,6 +2,7 @@ package com.stambulo.kotlinnotes.ui
 
 import android.app.Application
 import org.koin.android.ext.android.startKoin
+
 import com.stambulo.kotlinnotes.di.appModule
 import com.stambulo.kotlinnotes.di.mainModule
 import com.stambulo.kotlinnotes.di.noteModule
@@ -20,4 +21,3 @@ class App : Application() {
         startKoin(this, listOf(appModule, splashModule, mainModule, noteModule))
     }
 }
-

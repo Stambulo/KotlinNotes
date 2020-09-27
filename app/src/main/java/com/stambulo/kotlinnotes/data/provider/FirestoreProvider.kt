@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+
 import com.stambulo.kotlinnotes.data.entity.Note
 import com.stambulo.kotlinnotes.data.entity.User
 import com.stambulo.kotlinnotes.data.errors.NoAuthException
@@ -17,11 +18,11 @@ class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
     }
 
     private val currentUser
-        get() = FirebaseAuth.getInstance().currentUser
+        get() = firebaseAuth.currentUser
 
         private val notesReference
             get() = currentUser?.let {
-                store.collection(NOTES_COLLECTION).document(it.uid).collection(NOTES_COLLECTION)
+                store.collection(USERS_COLLECTION).document(it.uid).collection(NOTES_COLLECTION)
             } ?: throw NoAuthException()
 
 
@@ -35,25 +36,12 @@ class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
         try {
             notesReference.addSnapshotListener { snapshot, e ->
                 e?.let {
-
+                    value = NoteResult.Error(it)
                 } ?: snapshot?.let {
                     val notes = snapshot.documents.mapNotNull { it.toObject(Note::class.java) }
                     value = NoteResult.Success(notes)
                 }
             }
-        } catch (t: Throwable){
-            value = NoteResult.Error(t)
-        }
-    }
-
-    override fun saveNote(note: Note): LiveData<NoteResult> = MutableLiveData<NoteResult>().apply{
-        try {
-            notesReference.document(note.id).set(note)
-                .addOnSuccessListener { snapshot ->
-                    value = NoteResult.Success(note)
-                }.addOnFailureListener {
-                    value = NoteResult.Error(it)
-                }
         } catch (t: Throwable){
             value = NoteResult.Error(t)
         }
@@ -73,10 +61,23 @@ class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
         }
     }
 
+    override fun saveNote(note: Note): LiveData<NoteResult> = MutableLiveData<NoteResult>().apply{
+        try {
+            notesReference.document(note.id).set(note)
+                .addOnSuccessListener {
+                    value = NoteResult.Success(note)
+                }.addOnFailureListener {
+                    value = NoteResult.Error(it)
+                }
+        } catch (t: Throwable){
+            value = NoteResult.Error(t)
+        }
+    }
+
     override fun deleteNote(id: String): LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
         try {
             notesReference.document(id).delete()
-                .addOnSuccessListener { snapshot ->
+                .addOnSuccessListener {
                     value = NoteResult.Success(null)
                 }.addOnFailureListener {
                     value = NoteResult.Error(it)
