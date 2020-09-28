@@ -1,12 +1,14 @@
 package com.stambulo.kotlinnotes.ui.main
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Observer
+
 import com.stambulo.kotlinnotes.data.NotesRepository
 import com.stambulo.kotlinnotes.data.entity.Note
 import com.stambulo.kotlinnotes.data.model.NoteResult
 import com.stambulo.kotlinnotes.ui.base.BaseViewModel
 
-class MainViewModel() : BaseViewModel<List<Note>?, MainViewState>() {
+class MainViewModel(notesRepository: NotesRepository) : BaseViewModel<List<Note>?, MainViewState>() {
 
     private val notesObserver = Observer<NoteResult> { result ->
         result ?: return@Observer
@@ -16,14 +18,15 @@ class MainViewModel() : BaseViewModel<List<Note>?, MainViewState>() {
         }
     }
 
-    private val repositoryNotes = NotesRepository.getNotes()
+    private val repositoryNotes = notesRepository.getNotes()
 
     init {
         viewStateLiveData.value = MainViewState()
         repositoryNotes.observeForever(notesObserver)
     }
 
-    override fun onCleared() {
+    @VisibleForTesting
+    override public fun onCleared() {
         super.onCleared()
         repositoryNotes.removeObserver(notesObserver)
     }
